@@ -29,7 +29,7 @@ This repository supply a user-friendly interactive interface for [YOLOv8](https:
 - Feature1: Object detection task.
 - Feature2: Multiple detection models. `yolov8n`, `yolov8s`, `yolov8m`, `yolov8l`, `yolov8x`
 - Feature3: Multiple input formats. `Image`, `Video`, `Webcam`
-- Feature4: Multiple Object Tracking.
+- Feature4: Multiple Object Tracking and Counting.
 
 ## Run online
 You can use [This](https://monemati-yolov8-deepsort-streamlit-app-et5bli.streamlit.app/) link to try an online version on Streamlit.   
