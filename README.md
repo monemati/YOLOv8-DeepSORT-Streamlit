@@ -83,6 +83,7 @@ For Object Counting, you can choose "Video" from "Select Source" combo box and u
   
 ## Acknowledgement
 - https://github.com/ultralytics/ultralytics
+- https://github.com/streamlit/streamlit
 - https://github.com/ZQPei/deep_sort_pytorch
 - https://github.com/JackDance/YOLOv8-streamlit-app
 - https://github.com/MuhammadMoinFaisal/YOLOv8-DeepSORT-Object-Tracking
