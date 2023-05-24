@@ -31,6 +31,9 @@ This repository supply a user-friendly interactive interface for [YOLOv8](https:
 - Feature3: Multiple input formats. `Image`, `Video`, `Webcam`
 - Feature4: Multiple Object Tracking.
 
+## Run online
+You can use [This](https://monemati-yolov8-deepsort-streamlit-app-et5bli.streamlit.app/) link to try an online version on Streamlit.   
+
 ## Installation
 ### Create a virtual environment
 ```commandline
