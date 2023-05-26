@@ -127,6 +127,8 @@ def infer_uploaded_video(conf, model):
         if st.button("Execution"):
             with st.spinner("Running..."):
                 try:
+                    config.OBJECT_COUNTER1 = None
+                    config.OBJECT_COUNTER = None
                     tfile = tempfile.NamedTemporaryFile()
                     tfile.write(source_video.read())
                     vid_cap = cv2.VideoCapture(
