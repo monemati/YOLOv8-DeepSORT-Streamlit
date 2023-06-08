@@ -14,6 +14,8 @@ import cv2
 from PIL import Image
 import tempfile
 import config
+import os
+from datetime import datetime
 
 def _display_detected_frames(conf, model, st_count, st_frame, image):
     """
@@ -42,11 +44,29 @@ def _display_detected_frames(conf, model, st_count, st_frame, image):
     # Plot the detected objects on the video frame
     st_count.write(inText + '\n\n' + outText)
     res_plotted = res[0].plot()
+    _, width, _ = res_plotted.shape
+    if config.OBJECT_COUNTER1 != None:
+        for idx, (key, value) in enumerate(config.OBJECT_COUNTER1.items()):
+            cnt_str = str(key) + ":" +str(value)
+            cv2.line(res_plotted, (width - 500,25), (width,25), [85,45,255], 40)
+            cv2.putText(res_plotted, f'Number of Vehicles Entering', (width - 500, 35), 0, 1, [225, 255, 255], thickness=2, lineType=cv2.LINE_AA)
+            cv2.line(res_plotted, (width - 150, 65 + (idx*40)), (width, 65 + (idx*40)), [85, 45, 255], 30)
+            cv2.putText(res_plotted, cnt_str, (width - 150, 75 + (idx*40)), 0, 1, [255, 255, 255], thickness = 2, lineType = cv2.LINE_AA)
+    if config.OBJECT_COUNTER != None:
+        for idx, (key, value) in enumerate(config.OBJECT_COUNTER.items()):
+            cnt_str1 = str(key) + ":" +str(value)
+            cv2.line(res_plotted, (20,25), (500,25), [85,45,255], 40)
+            cv2.putText(res_plotted, f'Numbers of Vehicles Leaving', (11, 35), 0, 1, [225, 255, 255], thickness=2, lineType=cv2.LINE_AA)    
+            cv2.line(res_plotted, (20,65+ (idx*40)), (127,65+ (idx*40)), [85,45,255], 30)
+            cv2.putText(res_plotted, cnt_str1, (11, 75+ (idx*40)), 0, 1, [225, 255, 255], thickness=2, lineType=cv2.LINE_AA)
+    line = [(100, 500), (1050, 500)]
+    cv2.line(res_plotted, line[0], line[1], (46,162,112), 3)
     st_frame.image(res_plotted,
                    caption='Detected Video',
                    channels="BGR",
                    use_column_width=True
                    )
+    return res_plotted
 
 
 @st.cache_resource
@@ -135,17 +155,25 @@ def infer_uploaded_video(conf, model):
                         tfile.name)
                     st_count = st.empty()
                     st_frame = st.empty()
+                    width  = int(vid_cap.get(3)) 
+                    height = int(vid_cap.get(4))
+                    fps = int(vid_cap.get(5))
+                    out_name = "vid_out_{}.avi".format(datetime.now().replace(
+                                                microsecond=0)).replace(":", "-").replace(" ", "_")
+                    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+                    out = cv2.VideoWriter(out_name, fourcc, fps,(width, height))
                     while (vid_cap.isOpened()):
                         success, image = vid_cap.read()
                         if success:
-                            _display_detected_frames(conf,
-                                                     model,
-                                                     st_count,
-                                                     st_frame,
-                                                     image
-                                                     )
+                            result = _display_detected_frames(conf,
+                                                              model,
+                                                              st_count,
+                                                              st_frame,
+                                                              image)
+                            out.write(result)
                         else:
                             vid_cap.release()
+                            print('End...')
                             break
                 except Exception as e:
                     st.error(f"Error loading video: {e}")
